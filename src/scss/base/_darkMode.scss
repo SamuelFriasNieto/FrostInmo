@@ -1,0 +1,62 @@
+.dark {
+    background-color: darken($azulOscuro, 10);
+
+    .logo {
+        color: white;
+    }
+    
+    .logo span {
+        font-weight: bold;
+        color: $azul;
+    }
+
+    p {
+        color: $blanco;
+    }
+
+    a,h1,h2,h3,h4,label {
+        color: $azul;
+    }
+
+    .anuncio {
+        background-color: $azulOscuro;
+        border: 1px solid $azulOscuro;
+
+        .boton-azul-block {
+            background-color: $azul;
+            color: $azulOscuro;
+            &:hover {
+                background-color: darken($azul, 10);
+            }
+        }
+
+        .precio {
+            color: $verde;
+        }
+
+        .iconos-caracteristicas img {
+            filter: invert(100%);
+        }
+    }
+
+    .resumen-propiedad img {
+        filter: invert(100%);
+    }
+
+    .icono img {
+        filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(245deg) brightness(100%) contrast(104%);    
+    }
+
+    .texto-nosotros blockquote {
+        color: $azul;
+    }
+
+    .formulario {
+        background-color: $azulOscuro;
+        input:not([type='submit']),
+        textarea,
+        select {
+            background-color: lighten($color: $azul, $amount: 10);
+        }
+    }
+}
