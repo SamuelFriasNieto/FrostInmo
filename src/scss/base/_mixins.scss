@@ -31,8 +31,10 @@
     display: $display;
     border-radius: .5rem;
     transition: background-color .25s ease;
+    border: none;
 
     &:hover {
         background-color: lighten($bgColor,5);
+        cursor: pointer;
     }
 }
