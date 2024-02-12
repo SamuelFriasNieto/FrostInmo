@@ -9,6 +9,13 @@
     border: 1px solid darken($azul, 10);
     border-radius: .5rem;
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.205);
+    margin-bottom: 1rem;
+    &:last-of-type {
+        margin-bottom: 0;
+    }
+    @include tablet {
+        margin-bottom: 0;
+    }
 
     .contenido-anuncio {
         padding: 2rem;
