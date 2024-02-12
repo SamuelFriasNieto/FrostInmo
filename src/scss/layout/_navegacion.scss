@@ -20,5 +20,10 @@
         font-size: 1.8rem;
         display: block;
         text-align: center;
+        transition: transform .25s ease;
+        &:hover {
+            transform: translateX(-5px);
+        }
     }
+
 }
