@@ -31,7 +31,7 @@
           
         </div>
 
-        <?php if(isset($inicio)) { ?>
+        <?php if($inicio) { ?>
         <h1>Venta de casas y departamentos exclusivos de lujo</h1>
         <?php } ?>
       </div>
