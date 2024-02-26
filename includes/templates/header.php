@@ -15,11 +15,11 @@
           >
           
           <div class="mobile-menu">
-            <img src="build/img/barras.svg" alt="Icono hamburguesa">
+            <img src="/frostinmo/build/img/barras.svg" alt="Icono hamburguesa">
           </div>
 
           <div class="derecha">
-            <img class="dark-mode" src="build/img/dark-mode.svg" alt="dark mode">
+            <img class="dark-mode" src="/frostinmo/build/img/dark-mode.svg" alt="dark mode">
             <nav class="navegacion">
               <a href="nosotros.php">Nosotros</a>
               <a href="anuncios.php">Anuncios</a>
