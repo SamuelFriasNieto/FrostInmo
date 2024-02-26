@@ -6,6 +6,9 @@
     $db = conectarDB();
     $db->set_charset('utf8');
 
+    $consulta = "SELECT * FROM vendedores";
+    $vendedoresDB = mysqli_query($db,$consulta);
+
     $errores = [];
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -18,7 +21,8 @@
         $habitaciones = $_REQUEST['habitaciones'];
         $wc = $_REQUEST['wc'];
         $estacionamiento = $_REQUEST['estacionamiento'];
-        $vendedor = $_REQUEST['vendedor'];
+        $vendedorId = $_REQUEST['vendedor'];
+        $creado = date('Y-m-d');
 
         cTexto($titulo,'titulo',$errores);
         cNum($precio,'precio',$errores,TRUE,10000000000);
@@ -26,13 +30,17 @@
         cNum($habitaciones,'habitaciones',$errores,TRUE,20);
         cNum($wc,'wc',$errores,TRUE,20);
         cNum($estacionamiento,'estacionamiento',$errores,TRUE,20);
-        cNum($vendedor,'vendedor',$errores,TRUE,20);
+        cNum($vendedorId,'vendedor',$errores,TRUE,20);
 
         if(empty($errores)) {
-            $query = " INSERT INTO propiedades (titulo, precio, descripcion, habitaciones, wc, estacionamiento, vendedores_id ) VALUES ( '$titulo', '$precio', '$descripcion', '$habitaciones', '$wc', '$estacionamiento', '$vendedor' ) ";
+            $query = " INSERT INTO propiedades (titulo, precio, descripcion, habitaciones, wc, estacionamiento, vendedores_id, creado ) VALUES ( '$titulo', '$precio', '$descripcion', '$habitaciones', '$wc', '$estacionamiento', '$vendedorId', '$creado' ) ";
 
             $resultado = mysqli_query($db,$query);
             $error = mysqli_error($db);
+
+            if($resultado) {
+                header('location:/frostinmo/admin');
+            }
         }
     }
 
@@ -57,37 +65,40 @@
                 <legend>Información General</legend>
 
                 <label for="titulo">Título:</label>
-                <input type="text" name="titulo" id="titulo" placeholder="Propiedad" value=<?= $titulo ? $titulo : "" ?>>
+                <input type="text" name="titulo" id="titulo" placeholder="Propiedad" value=<?= isset($titulo) ? $titulo : "" ?>>
 
                 <label for="precio">Precio:</label>
-                <input type="text" name="precio" id="precio" placeholder="Precio Propiedad" value=<?= $precio ? $precio : "" ?>>
+                <input type="text" name="precio" id="precio" placeholder="Precio Propiedad" value=<?= isset($precio) ? $precio : "" ?>>
 
                 <label for="imagen">Imágen:</label>
                 <input type="file" name="imagen" id="imagen" accept="image/jpeg, image/png" placeholder="Imágen Propiedad">
 
                 <label for="descripcion">Descripción:</label>
-                <textarea name="descripcion" id="descripcion"><?= $descripcion ? $descripcion : "" ?></textarea>
+                <textarea name="descripcion" id="descripcion"><?= isset($descripcion) ? $descripcion : "" ?></textarea>
             </fieldset>
 
             <fieldset>
                 <legend>Información de la Propiedad</legend>
 
                 <label for="habitaciones">Habitaciones:</label>
-                <input type="number" name="habitaciones" id="habitaciones" placeholder="Ej: 3" min="1" max="9" value=<?= $habitaciones ? $habitaciones : "" ?>>
+                <input type="number" name="habitaciones" id="habitaciones" placeholder="Ej: 3" min="1" max="9" value=<?= isset($habitaciones) ? $habitaciones : "" ?>>
 
                 <label for="wc">Baños:</label>
-                <input type="number" name="wc" id="wc" placeholder="Ej: 3" min="1" max="9" value=<?= $wc ? $wc : "" ?>>
+                <input type="number" name="wc" id="wc" placeholder="Ej: 3" min="1" max="9" value=<?= isset($wc) ? $wc : "" ?>>
 
                 <label for="estacionamiento">Estacionamiento:</label>
-                <input type="number" name="estacionamiento" id="estacionamiento" placeholder="Ej: 3" min="1" max="9" value=<?= $estacionamiento ? $estacionamiento : "" ?>>
+                <input type="number" name="estacionamiento" id="estacionamiento" placeholder="Ej: 3" min="1" max="9" value=<?= isset($estacionamiento) ? $estacionamiento : "" ?>>
             </fieldset>
 
             <fieldset>
                 <legend>Vendedor</legend>
 
                 <select name="vendedor" id="">
-                    <option value="1">Samuel</option>
-                    <option value="2">Helena</option>
+                    <?php while($vendedor = mysqli_fetch_assoc($vendedoresDB)): ?>
+                        <option <?= isset($vendedorId) && $vendedorId === $vendedor['id'] ? 'selected' : "" ?> value='<?= $vendedor['id'] ?>'>
+                            <?= $vendedor['nombre'] . " " . $vendedor['apellidos'] ?>
+                        </option>
+                    <?php endwhile; ?>
                 </select>
             </fieldset>
 
