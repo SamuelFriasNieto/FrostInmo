@@ -13,15 +13,16 @@
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    
+        // Sanitización alternativa -> mysqli_real_escape_string($db,$_POST)
+        
 
-        $titulo = $_REQUEST['titulo'];
-        $precio = $_REQUEST['precio'];
-        $descripcion = $_REQUEST['descripcion'];
-        $habitaciones = $_REQUEST['habitaciones'];
-        $wc = $_REQUEST['wc'];
-        $estacionamiento = $_REQUEST['estacionamiento'];
-        $vendedorId = $_REQUEST['vendedor'];
+        $titulo = recoge('titulo');
+        $precio = recoge('precio');
+        $descripcion = recoge('descripcion');
+        $habitaciones = recoge('habitaciones');
+        $wc = recoge('wc');
+        $estacionamiento = recoge('estacionamiento');
+        $vendedorId = recoge('vendedor');
         $creado = date('Y-m-d');
 
         cTexto($titulo,'titulo',$errores);

@@ -55,6 +55,23 @@ function sinTildes($frase): string
     return $texto;
 }
 
+function sinEspacios($frase)
+{
+    $texto = trim(preg_replace('/ +/', ' ', $frase));
+    return $texto;
+}
+
+function recoge(string $campo): string
+{
+    if (isset($_REQUEST[$campo]) && (!is_array($_REQUEST[$campo]))) {
+        $tmp = sinEspacios($_REQUEST[$campo]);
+        $tmp = strip_tags($tmp);
+    } else
+        $tmp = "";
+
+    return $tmp;
+}
+
 function cTexto(string $text, string $campo, array &$errores, int $max = 30, int $min = 1, bool $espacios = TRUE, bool $case = TRUE): bool
 {
     $case = ($case === TRUE) ? "i" : "";
@@ -64,13 +81,6 @@ function cTexto(string $text, string $campo, array &$errores, int $max = 30, int
     }
     $errores[$campo] = "Error en el campo $campo";
     return false;
-}
-
-
-function sinEspacios($frase)
-{
-    $texto = trim(preg_replace('/ +/', ' ', $frase));
-    return $texto;
 }
 
 function cNum(string $num, string $campo, array &$errores, bool $requerido = TRUE, int $max = PHP_INT_MAX)
