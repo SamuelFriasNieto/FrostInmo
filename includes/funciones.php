@@ -72,6 +72,19 @@ function recoge(string $campo): string
     return $tmp;
 }
 
+function cImagen($imagen,$campo,&$errores,$tamaño = 1000*100) {
+    if(!$imagen['name'] || $imagen['error']) {
+        $errores[$campo] = 'La imágen es obligatoria';
+    }
+
+    if($imagen['size'] > $tamaño ) {
+        $errores[$campo] = 'La imágen es demasiado grande';
+    }
+    
+
+    return true;
+}
+
 function cTexto(string $text, string $campo, array &$errores, int $max = 30, int $min = 1, bool $espacios = TRUE, bool $case = TRUE): bool
 {
     $case = ($case === TRUE) ? "i" : "";

@@ -25,22 +25,38 @@
         $vendedorId = recoge('vendedor');
         $creado = date('Y-m-d');
 
+        $imagen = $_FILES['imagen'];
+
         cTexto($titulo,'titulo',$errores);
         cNum($precio,'precio',$errores,TRUE,10000000000);
+        cImagen($imagen,'imagen',$errores);
         cTexto($descripcion,'descripcion',$errores);
         cNum($habitaciones,'habitaciones',$errores,TRUE,20);
         cNum($wc,'wc',$errores,TRUE,20);
         cNum($estacionamiento,'estacionamiento',$errores,TRUE,20);
         cNum($vendedorId,'vendedor',$errores,TRUE,20);
 
+
+
         if(empty($errores)) {
-            $query = " INSERT INTO propiedades (titulo, precio, descripcion, habitaciones, wc, estacionamiento, vendedores_id, creado ) VALUES ( '$titulo', '$precio', '$descripcion', '$habitaciones', '$wc', '$estacionamiento', '$vendedorId', '$creado' ) ";
+
+            $carpetaImagenes = '../../imagenes/';
+
+            if(!is_dir($carpetaImagenes)){
+                mkdir($carpetaImagenes);
+            }
+
+            $nombreImagen = md5(uniqid(rand(),true)) . ".jpg";
+
+            move_uploaded_file($imagen['tmp_name'],$carpetaImagenes . $nombreImagen);
+
+            $query = " INSERT INTO propiedades (titulo, precio, descripcion, habitaciones, wc, estacionamiento, vendedores_id, creado, imagen ) VALUES ( '$titulo', '$precio', '$descripcion', '$habitaciones', '$wc', '$estacionamiento', '$vendedorId', '$creado', '$nombreImagen' ) ";
 
             $resultado = mysqli_query($db,$query);
             $error = mysqli_error($db);
 
             if($resultado) {
-                header('location:/frostinmo/admin');
+                header('location:/frostinmo/admin?resultado=1');
             }
         }
     }
@@ -61,7 +77,7 @@
             </div>
         <?php endforeach ?>
 
-        <form action="/frostinmo/admin/propiedades/crear.php" method="POST" class="formulario">
+        <form action="/frostinmo/admin/propiedades/crear.php" method="POST" class="formulario" enctype="multipart/form-data">
             <fieldset>
                 <legend>Información General</legend>
 
