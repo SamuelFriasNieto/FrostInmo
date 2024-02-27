@@ -72,9 +72,11 @@ function recoge(string $campo): string
     return $tmp;
 }
 
-function cImagen($imagen,$campo,&$errores,$tamaño = 1000*100) {
-    if(!$imagen['name'] || $imagen['error']) {
-        $errores[$campo] = 'La imágen es obligatoria';
+function cImagen($imagen,$campo,&$errores,$tamaño = 1000*100, $requerido = TRUE) {
+    if($requerido) {
+        if(!$imagen['name'] || $imagen['error']) {
+            $errores[$campo] = 'La imágen es obligatoria';
+        }
     }
 
     if($imagen['size'] > $tamaño ) {
@@ -99,7 +101,7 @@ function cTexto(string $text, string $campo, array &$errores, int $max = 30, int
 function cNum(string $num, string $campo, array &$errores, bool $requerido = TRUE, int $max = PHP_INT_MAX)
 {
     $cuantificador = ($requerido) ? "+" : "*";
-    if ((preg_match("/^[0-9]" . $cuantificador . "$/", $num)) && ($num <= $max)) {
+    if ((preg_match("/^[0-9.]" . $cuantificador . "$/", $num)) && ($num <= $max)) {
 
         return true;
     }

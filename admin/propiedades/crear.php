@@ -82,7 +82,7 @@
                 <legend>Información General</legend>
 
                 <label for="titulo">Título:</label>
-                <input type="text" name="titulo" id="titulo" placeholder="Propiedad" value=<?= isset($titulo) ? $titulo : "" ?>>
+                <input type="text" name="titulo" id="titulo" placeholder="Propiedad" value='<?= isset($titulo) ? $titulo : "" ?>'>
 
                 <label for="precio">Precio:</label>
                 <input type="text" name="precio" id="precio" placeholder="Precio Propiedad" value=<?= isset($precio) ? $precio : "" ?>>

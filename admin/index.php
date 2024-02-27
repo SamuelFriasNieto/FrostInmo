@@ -16,6 +16,8 @@
         <h1>Administrador de FrostInmo</h1>
         <?php  if($resultado === '1'): ?>
           <p class="alerta exito">Anuncio creado correctamente</p>
+        <?php elseif($resultado === '2'): ?>
+          <p>Anuncio actualizado correctamente</p>
         <?php endif ?>
 
         <a href="/frostinmo/admin/propiedades/crear.php" class="boton boton-verde">Nueva Propiedad</a>
@@ -40,7 +42,7 @@
               <td>$<?= $propiedad['precio'] ?></td>
               <td>
                 <a href="#" class="boton boton-rojo-block">Eliminar</a>
-                <a href="#" class="boton boton-azul-block">Actualizar</a>
+                <a href="/frostinmo/admin/propiedades/actualizar.php?id=<?= $propiedad['id'] ?>" class="boton boton-azul-block">Actualizar</a>
               </td>
             </tr>
             <?php endwhile; ?>
