@@ -9,6 +9,29 @@
   require '../includes/funciones.php';
   incluirTemplate('header');
 
+  if(isset($_REQUEST['eliminar'])) {
+    $id = recoge('id');
+
+    if($id) {
+      $query = "SELECT imagen FROM propiedades WHERE id = '$id'";
+      $resultado = mysqli_query($db,$query);
+      $resultado = mysqli_fetch_assoc($resultado);
+
+      $carpetaImagenes = '../imagenes/';
+      
+      unlink($carpetaImagenes . $resultado['imagen']);
+      
+      $query = "DELETE FROM propiedades WHERE id = '$id'";
+
+      $result = mysqli_query($db,$query);
+
+      if($result) {
+        header('location:/frostinmo/admin?resultado=3');
+      }
+    }
+    
+  }
+
   $resultado = recoge('resultado') ?? null;
 ?>
 
@@ -17,7 +40,9 @@
         <?php  if($resultado === '1'): ?>
           <p class="alerta exito">Anuncio creado correctamente</p>
         <?php elseif($resultado === '2'): ?>
-          <p>Anuncio actualizado correctamente</p>
+          <p class="alerta exito">Anuncio actualizado correctamente</p>
+          <?php elseif($resultado === '3'): ?>
+          <p class="alerta exito">Anuncio eliminado correctamente</p>
         <?php endif ?>
 
         <a href="/frostinmo/admin/propiedades/crear.php" class="boton boton-verde">Nueva Propiedad</a>
@@ -41,7 +66,11 @@
               <td><img src="/frostinmo/imagenes/<?= $propiedad['imagen'] ?>" class="imagen-tabla" alt=""></td>
               <td>$<?= $propiedad['precio'] ?></td>
               <td>
-                <a href="#" class="boton boton-rojo-block">Eliminar</a>
+                <form method="POST" class="w-100">
+                  <input type="hidden" name="id" value="<?= $propiedad['id'] ?>">
+                  <input type="submit" name="eliminar" value="Eliminar" href="#" class="boton boton-rojo-block">
+                </form>
+                
                 <a href="/frostinmo/admin/propiedades/actualizar.php?id=<?= $propiedad['id'] ?>" class="boton boton-azul-block">Actualizar</a>
               </td>
             </tr>
