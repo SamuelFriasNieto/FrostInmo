@@ -1,12 +1,18 @@
 <?php
+  require '../includes/funciones.php';
+  autenticar();
+
   require '../includes/config/database.php';
+
+
+
   $db = conectarDB();
 
   $query = "SELECT * FROM propiedades";
 
   $propiedades = mysqli_query($db,$query);
 
-  require '../includes/funciones.php';
+
   incluirTemplate('header');
 
   if(isset($_REQUEST['eliminar'])) {

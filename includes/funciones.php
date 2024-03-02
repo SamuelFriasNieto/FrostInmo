@@ -5,6 +5,13 @@ function incluirTemplate(string $nombre, bool $inicio = false) {
     include TEMPLATES_URL . "/$nombre.php";
 }
 
+function autenticar() {
+    session_start();
+    if(!$_SESSION['login']) {
+        header('Location:/frostinmo/login.php');
+    }
+}
+
 function sinTildes($frase): string
 {
     $no_permitidas = array(

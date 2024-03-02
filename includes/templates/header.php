@@ -1,3 +1,11 @@
+<?php 
+  if(!isset($_SESSION)) {
+    session_start();
+  }
+
+  $auth = isset($_SESSION['login']) ? true : false;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -10,7 +18,7 @@
     <header class="header <?php echo $inicio ? 'inicio' : ''; ?>">
       <div class="contenedor contenido-header">
         <div class="barra">
-          <a href="index.php"
+          <a href="/frostinmo/index.php"
             ><h2 class="logo">Frost<span>Inmo</span></h2></a
           >
           
@@ -21,10 +29,13 @@
           <div class="derecha">
             <img class="dark-mode" src="/frostinmo/build/img/dark-mode.svg" alt="dark mode">
             <nav class="navegacion">
-              <a href="nosotros.php">Nosotros</a>
-              <a href="anuncios.php">Anuncios</a>
-              <a href="blog.php">Blog</a>
-              <a href="contacto.php">Contacto</a>
+              <a href="/frostinmo/nosotros.php">Nosotros</a>
+              <a href="/frostinmo/anuncios.php">Anuncios</a>
+              <a href="/frostinmo/blog.php">Blog</a>
+              <a href="/frostinmo/contacto.php">Contacto</a>
+              <?php if($auth): ?>
+                <a href="/frostinmo/cerrar-sesion.php">Cerrar Sesión</a>
+              <?php endif; ?>
             </nav>
           </div>
 

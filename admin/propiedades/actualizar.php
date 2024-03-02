@@ -3,6 +3,8 @@
 require '../../includes/config/database.php';
 require '../../includes/funciones.php';
 
+autenticar();
+
 $db = conectarDB();
 $db->set_charset('utf8');
 
@@ -17,7 +19,6 @@ $consulta = "SELECT * FROM vendedores";
 $datos = mysqli_query($db, $consulta2);
 $datosPropiedades = mysqli_fetch_assoc($datos);
 $vendedoresDB = mysqli_query($db, $consulta);
-var_dump($datosPropiedades);
 
 $errores = [];
 $vendedorId = $datosPropiedades['vendedores_id'];

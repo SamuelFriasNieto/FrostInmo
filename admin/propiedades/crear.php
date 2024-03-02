@@ -3,6 +3,8 @@
     require '../../includes/config/database.php';
     require '../../includes/funciones.php';
 
+    autenticar();
+    
     $db = conectarDB();
     $db->set_charset('utf8');
 
