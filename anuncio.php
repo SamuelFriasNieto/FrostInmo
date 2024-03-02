@@ -1,19 +1,27 @@
 <?php
   require 'includes/funciones.php';
+  require 'includes/config/database.php';
+
+  $db = conectarDB();
+
+  $id = recoge('id');
+
+  $query = "SELECT * FROM propiedades WHERE id = '$id'";
+ 
+  $resultado = mysqli_query($db,$query);
+  
+  $propiedad = mysqli_fetch_assoc($resultado);
   incluirTemplate('header');
+
 ?>
 
     <main class="contenedor seccion contenido-centrado">
         <h1>Casa en venta frente al bosque</h1>
 
-        <picture>
-            <source srcset="build/img/destacada.webp" type="image/webp">
-            <source srcset="build/img/destacada.jpg" type="image/jpeg">
-            <img class="border-radius" loading="lazy" src="build/img/destacada.jpg" alt="Imagen Hogar">
-        </picture>
+          <img class="border-radius" loading="lazy" src="/frostinmo/imagenes/<?= $propiedad['imagen'] ?>" alt="Imagen Hogar">
 
         <div class="resumen-propiedad">
-            <p class="precio">$3,000,000</p>
+            <p class="precio"><?= $propiedad['precio'] ?></p>
             <ul class="iconos-caracteristicas">
                 <li>
                   <img
@@ -21,7 +29,7 @@
                     src="build/img/icono_wc.svg"
                     alt="icono wc"
                   />
-                  <p>3</p>
+                  <p><?= $propiedad['wc'] ?></p>
                 </li>
                 <li>
                   <img
@@ -29,7 +37,7 @@
                     src="build/img/icono_estacionamiento.svg"
                     alt="icono estacionamiento"
                   />
-                  <p>3</p>
+                  <p><?= $propiedad['estacionamiento'] ?></p>
                 </li>
                 <li>
                   <img
@@ -37,25 +45,12 @@
                     src="build/img/icono_dormitorio.svg"
                     alt="icono habitaciones"
                   />
-                  <p>4</p>
+                  <p><?= $propiedad['habitaciones'] ?></p>
                 </li>
               </ul>
 
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit saepe
-                aliquid necessitatibus beatae possimus fugiat dignissimos, libero
-                magni expedita et dolor at. Officia ex nam delectus facere.
-                Adipisci, nostrum perspiciatis! Lorem ipsum dolor sit amet
-                consectetur adipisicing elit. Impedit atque deserunt doloremque
-                dolore accusamus et numquam commodi id quaerat! Nostrum est
-                obcaecati dignissimos nesciunt ut, provident accusamus nulla
-                similique iusto?
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
-                earum, officia a sed aliquam aliquid. Sapiente facilis ipsum
-                repellendus eligendi porro possimus iste repudiandae. Placeat cum
-                quis nostrum quae praesentium.
+                <?= $propiedad['descripcion'] ?>
               </p>
         </div>
     </main>
