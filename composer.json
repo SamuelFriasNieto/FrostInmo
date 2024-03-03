@@ -1,0 +1,17 @@
+{
+    "name": "estudio/frost-inmo",
+    "description": "Proyecto de bienes raices",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Samuel Frias Nieto",
+            "email": "sae.nieto@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "App\\": "./classes"
+        }
+    }
+}

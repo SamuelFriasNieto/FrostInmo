@@ -1,7 +1,8 @@
 <?php
         
-    require '../../includes/config/database.php';
-    require '../../includes/funciones.php';
+    require '../../includes/app.php';
+
+    use App\Propiedad;
 
     autenticar();
     
@@ -42,6 +43,10 @@
 
         if(empty($errores)) {
 
+            $propiedad = new Propiedad($_POST);
+
+            $propiedad->guardar();
+
             $carpetaImagenes = '../../imagenes/';
 
             if(!is_dir($carpetaImagenes)){
@@ -52,10 +57,6 @@
 
             move_uploaded_file($imagen['tmp_name'],$carpetaImagenes . $nombreImagen);
 
-            $query = " INSERT INTO propiedades (titulo, precio, descripcion, habitaciones, wc, estacionamiento, vendedores_id, creado, imagen ) VALUES ( '$titulo', '$precio', '$descripcion', '$habitaciones', '$wc', '$estacionamiento', '$vendedorId', '$creado', '$nombreImagen' ) ";
-
-            $resultado = mysqli_query($db,$query);
-            $error = mysqli_error($db);
 
             if($resultado) {
                 header('location:/frostinmo/admin?resultado=1');

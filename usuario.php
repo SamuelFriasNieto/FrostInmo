@@ -1,6 +1,6 @@
 <?php
 
-require 'includes/config/database.php';
+require 'includes/config/app.php';
 $db = conectarDB();
 
 $email = "correo@correo.com";

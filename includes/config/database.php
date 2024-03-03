@@ -1,7 +1,7 @@
 <?php
 
 function conectarDB() :mysqli {
-    $db = mysqli_connect('localhost', 'root', 'root', 'frostinmo_crud');
+    $db = new mysqli('localhost', 'root', 'root', 'frostinmo_crud');
 
     if(!$db) {
         echo 'No se pudo conectar';
