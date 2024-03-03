@@ -12,38 +12,21 @@
     $consulta = "SELECT * FROM vendedores";
     $vendedoresDB = mysqli_query($db,$consulta);
 
-    $errores = [];
+    $errores = Propiedad::getErrores();
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        // Sanitización alternativa -> mysqli_real_escape_string($db,$_POST)
-        
-
-        $titulo = recoge('titulo');
-        $precio = recoge('precio');
-        $descripcion = recoge('descripcion');
-        $habitaciones = recoge('habitaciones');
-        $wc = recoge('wc');
-        $estacionamiento = recoge('estacionamiento');
-        $vendedorId = recoge('vendedor');
-        $creado = date('Y-m-d');
-
+        $propiedad = new Propiedad($_POST);
+    
         $imagen = $_FILES['imagen'];
 
-        cTexto($titulo,'titulo',$errores);
-        cNum($precio,'precio',$errores,TRUE,10000000000);
-        cImagen($imagen,'imagen',$errores);
-        cTexto($descripcion,'descripcion',$errores);
-        cNum($habitaciones,'habitaciones',$errores,TRUE,20);
-        cNum($wc,'wc',$errores,TRUE,20);
-        cNum($estacionamiento,'estacionamiento',$errores,TRUE,20);
-        cNum($vendedorId,'vendedor',$errores,TRUE,20);
+        $errores = $propiedad->validarDatos();
 
 
 
         if(empty($errores)) {
 
-            $propiedad = new Propiedad($_POST);
+
 
             $propiedad->guardar();
 

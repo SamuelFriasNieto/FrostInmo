@@ -10,6 +10,8 @@ class Propiedad
     protected static $columnasDB = ['id','titulo','precio','descripcion','imagen',
     'wc','habitaciones','estacionamiento','creado','vendedor'];
 
+    protected static $errores = [];
+
     public $id;
     public $titulo;
     public $precio;
@@ -69,6 +71,23 @@ class Propiedad
         }
 
         return $sanitizado;
+    }
+
+    public function validarDatos() {
+        cTexto($this->titulo,'titulo',self::$errores);
+        cNum($this->precio,'precio',self::$errores,TRUE,10000000000);
+        cImagen($this->imagen,'imagen',self::$errores);
+        cTexto($this->descripcion,'descripcion',self::$errores);
+        cNum($this->habitaciones,'habitaciones',self::$errores,TRUE,20);
+        cNum($this->wc,'wc',self::$errores,TRUE,20);
+        cNum($this->estacionamiento,'estacionamiento',self::$errores,TRUE,20);
+        cNum($this->vendedor,'vendedor',self::$errores,TRUE,20);
+
+        return self::$errores;
+    }
+
+    public static function getErrores() {
+        return self::$errores;
     }
 
     public static function setDB($database) {
