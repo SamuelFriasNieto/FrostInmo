@@ -125,3 +125,9 @@ function cSelect(string $text, string $campo, array &$errores, array $valores, b
     $errores[$campo] = "Error en el campo $campo";
     return false;
 }
+
+function s($html) {
+    $s = htmlspecialchars($html);
+
+    return $s;
+}
