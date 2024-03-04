@@ -3,6 +3,7 @@
     require '../../includes/app.php';
 
     use App\Propiedad;
+    use Intervention\Image\ImageManagerStatic as Image;
 
     autenticar();
     
@@ -17,31 +18,28 @@
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $propiedad = new Propiedad($_POST);
-    
-        $imagen = $_FILES['imagen'];
+
+        $carpetaImagenes = '../../imagenes/';
+
+        $nombreImagen = md5(uniqid(rand(),true)) . ".jpg";
+
+        if($_FILES['imagen']['tmp_name']) {
+            $image = Image::make($_FILES['imagen']['tmp_name'])->fit(800,600);
+            $propiedad->setImagen($nombreImagen);
+        }
 
         $errores = $propiedad->validarDatos();
-
-
+        
 
         if(empty($errores)) {
 
-
-
-            $propiedad->guardar();
-
-            $carpetaImagenes = '../../imagenes/';
-
-            if(!is_dir($carpetaImagenes)){
-                mkdir($carpetaImagenes);
+            if(!is_dir(CARPETAS_IMAGENES)) {
+                mkdir(CARPETAS_IMAGENES);
             }
 
-            $nombreImagen = md5(uniqid(rand(),true)) . ".jpg";
+            $image->save(CARPETAS_IMAGENES . $nombreImagen);
 
-            move_uploaded_file($imagen['tmp_name'],$carpetaImagenes . $nombreImagen);
-
-
-            if($resultado) {
+            if($propiedad->guardar()) {
                 header('location:/frostinmo/admin?resultado=1');
             }
         }

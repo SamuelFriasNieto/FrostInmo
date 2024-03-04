@@ -29,7 +29,7 @@ class Propiedad
         $this->titulo = $args['titulo'] ?? "";
         $this->precio = $args['precio'] ?? "";
         $this->descripcion = $args['descripcion'] ?? "";
-        $this->imagen = $args['imagen'] ?? "imagen.jpg";
+        $this->imagen = $args['imagen'] ?? "";
         $this->wc = $args['wc'] ?? "";
         $this->habitaciones = $args['habitaciones'] ?? "";
         $this->estacionamiento = $args['estacionamiento'] ?? "";
@@ -49,7 +49,7 @@ class Propiedad
 
         $resultado = self::$db->query($query);
 
-        var_dump($resultado);
+        return $resultado;
     }
 
     public function atributos() {
@@ -84,6 +84,12 @@ class Propiedad
         cNum($this->vendedor,'vendedor',self::$errores,TRUE,20);
 
         return self::$errores;
+    }
+
+    public function setImagen($imagen) {
+        if($imagen) {
+            $this->imagen = $imagen;
+        }
     }
 
     public static function getErrores() {

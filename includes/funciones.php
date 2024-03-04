@@ -2,6 +2,7 @@
 
 define('TEMPLATES_URL', __DIR__ . '/templates');
 define('FUNCIONES_URL', __DIR__ . 'funciones.php');
+define('CARPETAS_IMAGENES', __DIR__ . '/../imagenes/');
 
 function incluirTemplate(string $nombre, bool $inicio = false) {
     include TEMPLATES_URL . "/$nombre.php";
@@ -81,17 +82,12 @@ function recoge(string $campo): string
     return $tmp;
 }
 
-function cImagen($imagen,$campo,&$errores,$tamaño = 1000*100, $requerido = TRUE) {
+function cImagen($imagen,$campo,&$errores, $requerido = TRUE) {
     if($requerido) {
-        if(!$imagen['name'] || $imagen['error']) {
+        if(!$imagen) {
             $errores[$campo] = 'La imágen es obligatoria';
         }
     }
-
-    if($imagen['size'] > $tamaño ) {
-        $errores[$campo] = 'La imágen es demasiado grande';
-    }
-    
 
     return true;
 }

@@ -1,10 +1,6 @@
 <?php
-  require '../includes/funciones.php';
+  require '../includes/app.php';
   autenticar();
-
-  require '../includes/config/database.php';
-
-
 
   $db = conectarDB();
 
