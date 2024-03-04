@@ -1,6 +1,7 @@
 <?php
 
 use App\Propiedad;
+use Intervention\Image\ImageManagerStatic as Image;
 
 require '../../includes/app.php';
 
@@ -17,68 +18,36 @@ $propiedad = Propiedad::find($idPropiedad);
 $consulta = "SELECT * FROM vendedores";
 $vendedoresDB = mysqli_query($db, $consulta);
 
-$errores = [];
+$errores = Propiedad::getErrores();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-  // Sanitización alternativa -> mysqli_real_escape_string($db,$_POST)
+  $args = [];
 
+  $args['titulo'] = $_POST['titulo'] ?? null;
+  $args['precio'] = $_POST['precio'] ?? null;
+  $args['descripcion'] = $_POST['descripcion'] ?? null;
+  $args['habitaciones'] = $_POST['habitaciones'] ?? null;
+  $args['wc'] = $_POST['wc'] ?? null;
+  $args['estacionamiento'] = $_POST['estacionamiento'] ?? null;
+  $args['vendedor'] = $_POST['vendedor'] ?? null;
 
-  $titulo = recoge('titulo');
-  $precio = recoge('precio');
-  $descripcion = recoge('descripcion');
-  $habitaciones = recoge('habitaciones');
-  $wc = recoge('wc');
-  $estacionamiento = recoge('estacionamiento');
-  $vendedorId = recoge('vendedor');
-  $creado = date('Y-m-d');
+  $propiedad->sincronizar($args);
 
-  $imagen = $_FILES['imagen'];
+  $nombreImagen = md5(uniqid(rand(),true)) . ".jpg";
 
-  cTexto($titulo, 'titulo', $errores);
-  cNum($precio, 'precio', $errores, TRUE, 10000000000);
-  cImagen($imagen, 'imagen', $errores, 1000 * 100, FALSE);
-  cTexto($descripcion, 'descripcion', $errores);
-  cNum($habitaciones, 'habitaciones', $errores, TRUE, 20);
-  cNum($wc, 'wc', $errores, TRUE, 20);
-  cNum($estacionamiento, 'estacionamiento', $errores, TRUE, 20);
-  cNum($vendedorId, 'vendedor', $errores, TRUE, 20);
+  if($_FILES['imagen']['tmp_name']) {
+      $image = Image::make($_FILES['imagen']['tmp_name'])->fit(800,600);
+      $propiedad->setImagen($nombreImagen);
+  }
 
-
+  $errores = $propiedad->validarDatos();
 
   if (empty($errores)) {
-    
-    $carpetaImagenes = '../../imagenes/';
 
-    if (!is_dir($carpetaImagenes)) {
-      mkdir($carpetaImagenes);
-    }
+    $image->save(CARPETAS_IMAGENES . $nombreImagen);
 
-    if ($imagen['name']) {
-      unlink($carpetaImagenes . $datosPropiedades['imagen']);
-      $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
-    } else {
-      $nombreImagen = $datosPropiedades['imagen'];
-    }
-
-
-
-    move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen);
-
-    $query = " UPDATE propiedades SET 
-            titulo = '$titulo',
-            precio = '$precio',
-            imagen = '$nombreImagen',
-            descripcion = '$descripcion',
-            wc = '$wc',
-            estacionamiento = '$estacionamiento',
-            vendedores_id = '$vendedorId'
-            WHERE id = '$idPropiedad' ";
-
-    $resultado = mysqli_query($db, $query);
-    $error = mysqli_error($db);
-
-    if ($resultado) {
+    if ($propiedad->guardar()) {
       header('location:/frostinmo/admin?resultado=2');
     }
   }

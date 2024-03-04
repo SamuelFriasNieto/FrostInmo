@@ -21,8 +21,6 @@
 
         $propiedad = new Propiedad($_POST);
 
-        $carpetaImagenes = '../../imagenes/';
-
         $nombreImagen = md5(uniqid(rand(),true)) . ".jpg";
 
         if($_FILES['imagen']['tmp_name']) {

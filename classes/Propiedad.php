@@ -38,7 +38,15 @@ class Propiedad
 
     }
 
-    public function guardar()
+    public function guardar() {
+        if(isset($this->id)) {
+            return $this->actualizar();
+        } else {
+            return $this->crear();
+        }
+    }
+
+    public function crear()
     {
         $atributos = $this->sanitizarDatos();
 
@@ -50,6 +58,31 @@ class Propiedad
         $resultado = self::$db->query($query);
 
         return $resultado;
+    }
+
+    public function actualizar() {
+
+        $atributos = $this->sanitizarDatos();
+
+        $valores = [];
+        foreach($atributos as $key => $value) {
+            if($key === 'vendedor') {
+                $valores[] = "vendedores_id = '$value'";
+            } else {
+                $valores[] = "$key = '$value'";
+            }
+        }
+
+        $string = join(', ',$valores);
+
+        $query = "UPDATE propiedades SET ";
+        $query .= $string;
+        $query .= " WHERE id = " . self::$db->escape_string($this->id);
+
+        $resultado = self::$db->query($query);
+
+        return $resultado;
+
     }
 
     public function atributos() {
@@ -87,6 +120,13 @@ class Propiedad
     }
 
     public function setImagen($imagen) {
+        if(isset($this->id)) {
+            $existeArchivo = file_exists(CARPETAS_IMAGENES . $this->imagen);
+            if($existeArchivo) {
+                unlink(CARPETAS_IMAGENES . $this->imagen);
+            }
+        }
+
         if($imagen) {
             $this->imagen = $imagen;
         }
@@ -139,5 +179,13 @@ class Propiedad
             }
         }
         return $objeto;
+    }
+
+    public function sincronizar($array = []) {
+        foreach($array as $key => $value) {
+            if(property_exists($this,$key) || is_null($value)) {
+                $this->$key = $value;
+            }
+        }
     }
 }
