@@ -1,15 +1,13 @@
 <?php
+
+use App\Propiedad;
+
   require '../includes/app.php';
   autenticar();
 
-  $db = conectarDB();
-
-  $query = "SELECT * FROM propiedades";
-
-  $propiedades = mysqli_query($db,$query);
-
-
   incluirTemplate('header');
+
+  $propiedades = Propiedad::all();
 
   if(isset($_REQUEST['eliminar'])) {
     $id = recoge('id');
@@ -61,28 +59,27 @@
           </thead>
 
           <tbody>
-            <?php while($propiedad = mysqli_fetch_assoc($propiedades)): ?>
+            <?php foreach($propiedades as $propiedad) :?>
             <tr>
-              <td><?= $propiedad['id'] ?></td>
-              <td><?= $propiedad['titulo'] ?></td>
-              <td><img src="/frostinmo/imagenes/<?= $propiedad['imagen'] ?>" class="imagen-tabla" alt=""></td>
-              <td>$<?= $propiedad['precio'] ?></td>
+              <td><?= $propiedad->id ?></td>
+              <td><?= $propiedad->titulo ?></td>
+              <td><img src="/frostinmo/imagenes/<?= $propiedad->imagen ?>" class="imagen-tabla" alt=""></td>
+              <td>$<?= $propiedad->precio ?></td>
               <td>
                 <form method="POST" class="w-100">
-                  <input type="hidden" name="id" value="<?= $propiedad['id'] ?>">
+                  <input type="hidden" name="id" value="<?= $propiedad->id ?>">
                   <input type="submit" name="eliminar" value="Eliminar" href="#" class="boton boton-rojo-block">
                 </form>
                 
-                <a href="/frostinmo/admin/propiedades/actualizar.php?id=<?= $propiedad['id'] ?>" class="boton boton-azul-block">Actualizar</a>
+                <a href="/frostinmo/admin/propiedades/actualizar.php?id=<?= $propiedad->id ?>" class="boton boton-azul-block">Actualizar</a>
               </td>
             </tr>
-            <?php endwhile; ?>
+            <?php endforeach; ?>
           </tbody>
         </table>
     </main>
 
 <?php
-  mysqli_close($db);
 
   incluirTemplate('footer');
 ?>

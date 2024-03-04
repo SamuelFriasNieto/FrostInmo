@@ -99,4 +99,37 @@ class Propiedad
     public static function setDB($database) {
         self::$db = $database;
     }
+
+    public static function all() {
+        $query = "SELECT * FROM propiedades ORDER BY creado DESC";
+
+        return self::consultarSQL($query);
+    }
+
+    public static function consultarSQL($query) {
+        $resultado = self::$db->query($query);
+
+        $array = [];
+        while($registro = $resultado->fetch_assoc()) {
+            $array[] = self::crearObjeto($registro);
+        }
+
+        $resultado->free();
+
+        return $array;
+
+    }
+
+    protected static function crearObjeto($registro) {
+        $objeto = new self;
+
+        foreach($registro as $key => $value) {
+            if($key == 'vendedores_id'){
+                $objeto->vendedor = $value;
+            } elseif(property_exists($objeto, $key)) {
+                $objeto->$key = $value;
+            }
+        }
+        return $objeto;
+    }
 }
