@@ -1,26 +1,22 @@
 <?php
+use App\Propiedad;
   require 'includes/app.php';
-
-  $db = conectarDB();
 
   $id = recoge('id');
 
-  $query = "SELECT * FROM propiedades WHERE id = '$id'";
- 
-  $resultado = mysqli_query($db,$query);
-  
-  $propiedad = mysqli_fetch_assoc($resultado);
+  $propiedad = Propiedad::find($id);
+
   incluirTemplate('header');
 
 ?>
 
     <main class="contenedor seccion contenido-centrado">
-        <h1>Casa en venta frente al bosque</h1>
+        <h1><?= $propiedad->titulo ?></h1>
 
-          <img class="border-radius" loading="lazy" src="/frostinmo/imagenes/<?= $propiedad['imagen'] ?>" alt="Imagen Hogar">
+          <img class="border-radius" loading="lazy" src="/frostinmo/imagenes/<?= $propiedad->imagen ?>" alt="Imagen Hogar">
 
         <div class="resumen-propiedad">
-            <p class="precio"><?= $propiedad['precio'] ?></p>
+            <p class="precio"><?= $propiedad->precio ?></p>
             <ul class="iconos-caracteristicas">
                 <li>
                   <img
@@ -28,7 +24,7 @@
                     src="build/img/icono_wc.svg"
                     alt="icono wc"
                   />
-                  <p><?= $propiedad['wc'] ?></p>
+                  <p><?= $propiedad->wc ?></p>
                 </li>
                 <li>
                   <img
@@ -36,7 +32,7 @@
                     src="build/img/icono_estacionamiento.svg"
                     alt="icono estacionamiento"
                   />
-                  <p><?= $propiedad['estacionamiento'] ?></p>
+                  <p><?= $propiedad->estacionamiento ?></p>
                 </li>
                 <li>
                   <img
@@ -44,12 +40,12 @@
                     src="build/img/icono_dormitorio.svg"
                     alt="icono habitaciones"
                   />
-                  <p><?= $propiedad['habitaciones'] ?></p>
+                  <p><?= $propiedad->habitaciones ?></p>
                 </li>
               </ul>
 
               <p>
-                <?= $propiedad['descripcion'] ?>
+                <?= $propiedad->descripcion ?>
               </p>
         </div>
     </main>

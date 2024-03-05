@@ -3,19 +3,15 @@
     require '../../includes/app.php';
 
     use App\Propiedad;
+    use App\Vendedor;
     use Intervention\Image\ImageManagerStatic as Image;
 
     autenticar();
-    
-    $db = conectarDB();
-    $db->set_charset('utf8');
-
-    $consulta = "SELECT * FROM vendedores";
-    $vendedoresDB = mysqli_query($db,$consulta);
 
     $errores = Propiedad::getErrores();
 
     $propiedad = new Propiedad();
+    $vendedores = Vendedor::all();
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
