@@ -85,6 +85,15 @@ class Propiedad
 
     }
 
+    public function eliminar() {
+        $query = "DELETE FROM propiedades WHERE id = " . self::$db->escape_string($this->id);
+
+        $resultado = self::$db->query($query);
+        $this->borrarImagen();
+
+        return $resultado;
+    }
+
     public function atributos() {
         $atributos = [];
         foreach(self::$columnasDB as $columna) {
@@ -121,14 +130,18 @@ class Propiedad
 
     public function setImagen($imagen) {
         if(isset($this->id)) {
-            $existeArchivo = file_exists(CARPETAS_IMAGENES . $this->imagen);
-            if($existeArchivo) {
-                unlink(CARPETAS_IMAGENES . $this->imagen);
-            }
+            $this->borrarImagen();
         }
 
         if($imagen) {
             $this->imagen = $imagen;
+        }
+    }
+
+    public function borrarImagen() {
+        $existeArchivo = file_exists(CARPETAS_IMAGENES . $this->imagen);
+        if($existeArchivo) {
+            unlink(CARPETAS_IMAGENES . $this->imagen);
         }
     }
 

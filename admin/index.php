@@ -10,20 +10,12 @@ use App\Propiedad;
   $propiedades = Propiedad::all();
 
   if(isset($_REQUEST['eliminar'])) {
-    $id = recoge('id');
+    $idPropiedad = recoge('id');
 
-    if($id) {
-      $query = "SELECT imagen FROM propiedades WHERE id = '$id'";
-      $resultado = mysqli_query($db,$query);
-      $resultado = mysqli_fetch_assoc($resultado);
+    if($idPropiedad) {
+      $propiedad = Propiedad::find($idPropiedad);
 
-      $carpetaImagenes = '../imagenes/';
-      
-      unlink($carpetaImagenes . $resultado['imagen']);
-      
-      $query = "DELETE FROM propiedades WHERE id = '$id'";
-
-      $result = mysqli_query($db,$query);
+      $result = $propiedad->eliminar();
 
       if($result) {
         header('location:/frostinmo/admin?resultado=3');

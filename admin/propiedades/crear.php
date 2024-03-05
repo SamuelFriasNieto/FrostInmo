@@ -30,7 +30,6 @@
 
         $errores = $propiedad->validarDatos();
         
-
         if(empty($errores)) {
 
             if(!is_dir(CARPETAS_IMAGENES)) {
